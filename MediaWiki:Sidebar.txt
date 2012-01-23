@@ -1,0 +1,18 @@
+Example of [[MediaWiki:Sidebar]]:
+
+--------8<----------------
+* Wiki
+**  mainpage|mainpage-description
+**  recentchanges-url|recentchanges
+**  randompage-url|randompage
+**  http://meta.wikimedia.org/wiki/Help:Contents|Help 
+* Space: <img style="height:1.2em; border:none" src="https://example.org/status/status.png" /> 
+** Foo|Link
+* SEARCH
+* TOOLBOX
+* LANGUAGES
+-------->8----------------
+
+Note that HTML is not interpreted in the "boxes" (i.e. second-level lists),
+only in the "headers" (i.e. first-level lists).
+
