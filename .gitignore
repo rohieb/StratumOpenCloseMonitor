@@ -1,0 +1,7 @@
+www/status.json
+www/status.txt
+www/status.xml
+*.pyc
+# vim swap files
+.*.sw*
+www/.htaccess
