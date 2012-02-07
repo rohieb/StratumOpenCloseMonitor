@@ -1,0 +1,13 @@
+The Stratum 0 Open/Close Monitor shows whether the hackerspace is opened or
+closed.
+
+Currently the status can only be set by users on IRC. A plugin for the supybot
+IRC bot listens for !open and !close commands, and in this case writes an
+.htaccess configuration for the Apache web server, which then redirects queries
+of status.png to either open.png or closed.png, according to the hackerspace
+status. The supybot plugin also writes machine-readable information in JSON,
+XML and RFC822 format which can be used to build other applications to display
+the status (like @wansti's StratumsphereStatusWidget for Android)
+
+See https://stratum0.org/mediawiki/index.php/Open/Close-Monitor for more
+information (in German).
