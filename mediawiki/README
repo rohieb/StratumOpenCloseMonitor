@@ -1,5 +1,6 @@
 This simple extension looks in MediaWiki:Sidebar for the section labeled
-"Space-Status", and replaces it with the open/close image.
+"Space-Status", and replaces it with the open/close image. For an example, have
+a look at http://stratum0.org/wiki/MediaWiki:Sidebar.
 
 To install the extension, download StratumOpenCloseSidebar.php to your
 MediaWiki extensions folder, and add the following line to your 
