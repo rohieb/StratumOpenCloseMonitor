@@ -1,0 +1,2 @@
+# allow ircbot to reload the nginx configuration
+ircbot	ALL = NOPASSWD: /usr/bin/killall -HUP nginx
