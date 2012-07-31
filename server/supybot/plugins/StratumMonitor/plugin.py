@@ -141,16 +141,16 @@ Since: {{{SINCE}}}\r
     self.since = datetime.now()
     self.isOpen = False;
     self.writeFiles()
-    irc.reply("Space ist zu (Stand: %s)" % self.topicTimeString(self.since),
+    irc.reply("Space ist zu (%s)" % self.topicTimeString(self.since),
       prefixNick = False)
 
   spaceclosed = wrap(spaceclosed)
 
   def spacestatus(self, irc, msg, args):
     if(self.isOpen):
-      irc.reply("Space ist offen (seit %s)" % self.topicTimeString(self.since))
+      irc.reply("Space ist offen (%s)" % self.topicTimeString(self.since))
     else:
-      irc.reply("Space ist zu (seit %s)" % self.topicTimeString(self.since))
+      irc.reply("Space ist zu (%s)" % self.topicTimeString(self.since))
 
   spacestatus = wrap(spacestatus)
 
