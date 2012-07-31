@@ -54,25 +54,30 @@ class StratumMonitor(callbacks.Plugin):
   }
 }
 """
-  API_TEXT_FILE = "/srv/status.stratum0.org/status.txt"
+  API_PATH  = "/srv/status.stratum0.org/%s"
+
+  API_TEXT_FILE = API_PATH % "status.txt"
   API_TEXT_TEMPLATE ="""Version: {{{VERSION}}}\r
 IsOpen: {{{ISOPEN}}}\r
 Since: {{{SINCE}}}\r
 """
-  API_JSON_FILE = "/srv/status.stratum0.org/status.json"
+  API_JSON_FILE = API_PATH % "status.json"
   API_JSON_TEMPLATE = """{\r
   "version": "{{{VERSION}}}",\r
   "isOpen": {{{ISOPEN}}},\r
   "since": "{{{SINCE}}}"\r
 }\r
 """
-  API_XML_FILE = "/srv/status.stratum0.org/status.xml"
+  API_XML_FILE = API_PATH % "status.xml"
   API_XML_TEMPLATE = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\r
 <status version="{{{VERSION}}}">\r
   <isOpen>{{{ISOPEN}}}</isOpen>\r
   <since>{{{SINCE}}}</since>\r
 </status>\r
 """
+
+  API_ARCHIVE_FILE = API_PATH % "archive.txt"
+  API_ARCHIVE_TEMPLATE = "{{{ACTION}}}: {{{SINCE}}}\r\n"
 
   VERSION = "0.1"   ### Bump this for new API versions
 
@@ -93,10 +98,12 @@ Since: {{{SINCE}}}\r
     text = text.replace("{{{SINCE}}}", self.since.isoformat())
     text = text.replace("{{{ISOPEN}}}", "true" if self.isOpen else "false")
     text = text.replace("{{{STATUS}}}", "open" if self.isOpen else "closed")
+    text = text.replace("{{{ACTION}}}", "Opened" if self.isOpen else "Closed")
     return text
 
-  def writeFile(self, filename, template):
-    with open(filename, "w") as f:
+  def writeFile(self, filename, template, append=False):
+    mode = "a" if append else "w"
+    with open(filename, mode) as f:
       self.log.info("writing to file %s" % filename)
       t = self.replaceVariables(template)
       f.write(t)
@@ -106,6 +113,7 @@ Since: {{{SINCE}}}\r
     self.writeFile(self.API_TEXT_FILE, self.API_TEXT_TEMPLATE)
     self.writeFile(self.API_JSON_FILE, self.API_JSON_TEMPLATE)
     self.writeFile(self.API_XML_FILE, self.API_XML_TEMPLATE)
+    self.writeFile(self.API_ARCHIVE_FILE, self.API_ARCHIVE_TEMPLATE, True)
     r = os.system("sudo killall -HUP nginx"); # NOTE: must be in sudoers to do that!
 
   def spaceopen(self, irc, msg, args):
