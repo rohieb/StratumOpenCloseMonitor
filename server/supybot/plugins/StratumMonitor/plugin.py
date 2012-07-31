@@ -116,7 +116,7 @@ Since: {{{SINCE}}}\r
     self.writeFile(self.API_ARCHIVE_FILE, self.API_ARCHIVE_TEMPLATE, True)
     r = os.system("sudo killall -HUP nginx"); # NOTE: must be in sudoers to do that!
 
-  def spaceopen(self, irc, msg, args):
+  def spaceopen(self, irc, msg, args, nick):
     """
     This command is for internal use only. Any unauthorized use is prohibited.
     If you use it anyhow, this command will eat your dog, fry it and quarter it
@@ -126,10 +126,11 @@ Since: {{{SINCE}}}\r
     self.since = datetime.now()
     self.isOpen = True;
     self.writeFiles()
+    n = nick if nick else msg.nick
     irc.reply("Space ist offen (%s, %s)" %
-      (self.topicTimeString(self.since), msg.nick), prefixNick = False)
+      (self.topicTimeString(self.since), n), prefixNick = False)
 
-  spaceopen = wrap(spaceopen)
+  spaceopen = wrap(spaceopen, [optional('nick')])
 
   def spaceclosed(self, irc, msg, args):
     """
