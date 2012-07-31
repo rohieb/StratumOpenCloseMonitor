@@ -126,8 +126,8 @@ Since: {{{SINCE}}}\r
     self.since = datetime.now()
     self.isOpen = True;
     self.writeFiles()
-    irc.reply("Space ist offen (Stand: %s)" % self.topicTimeString(self.since),
-      prefixNick = False)
+    irc.reply("Space ist offen (%s, %s)" %
+      (self.topicTimeString(self.since), msg.nick), prefixNick = False)
 
   spaceopen = wrap(spaceopen)
 
