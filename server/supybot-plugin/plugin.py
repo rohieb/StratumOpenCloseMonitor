@@ -55,7 +55,7 @@ class StratumMonitor(callbacks.Plugin):
 }
 """
   API_TEXT_FILE = "/srv/status.stratum0.org/status.txt"
-  API_TEXT_TEMPLATE ="""Version: {{{VERSION}}\r
+  API_TEXT_TEMPLATE ="""Version: {{{VERSION}}}\r
 IsOpen: {{{ISOPEN}}}\r
 Since: {{{SINCE}}}\r
 """
