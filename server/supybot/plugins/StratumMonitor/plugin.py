@@ -52,6 +52,9 @@ class StratumMonitor(callbacks.Plugin):
     rewrite ^/favicon.ico$ $scheme://$http_host/{{{STATUS}}}.ico redirect;
     expires +5m;
   }
+  location ~* /(open|closed)\.(ico|png)$ {
+    expires off;
+  }
 }
 """
   API_PATH  = "/srv/status.stratum0.org/%s"
