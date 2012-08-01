@@ -1,0 +1,10 @@
+This is a plugin for Munin to monitor the Stratum 0 open/close status. It
+produces a rectangular graph which is 1 at times when the hackerspace is open,
+and 0 when it's closed.
+
+To install this plugin, simply copy the file stratummonitor.munin to your Munin
+plugin directory, in most cases /etc/munin/plugins, and restart the Munin node.
+(This was the tl;dr version, for a more extensive explanation what to to, refer
+to http://munin-monitoring.org/wiki/faq#a3.Nodeplugins)
+
+Dependencies are curl, sed and tr.

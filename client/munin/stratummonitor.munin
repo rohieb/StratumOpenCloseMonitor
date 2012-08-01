@@ -1,0 +1,27 @@
+#!/bin/sh
+ #%# family=auto
+ #%# capabilities=autoconf
+
+if [ "$1" = "autoconf" ]; then
+  echo yes
+  exit 0
+fi
+
+if [ "$1" = "config" ]; then
+  echo 'graph_title Stratum 0 Openness'
+  echo 'graph_args --lower-limit -0.3 --upper-limit 1.1'
+  echo 'graph_category Stratum0'
+  echo 'stratummonitor.label openness'
+  echo 'stratummonitor.info "1 if the hackerspace is open, 0 if it is closed"'
+  exit 0;
+fi;
+
+VALUE=$(curl -s --connect-timeout 5 --ipv4 http://status.stratum0.org/status.txt |
+  sed -n '/IsOpen: true/p; /IsOpen: false/p' |
+  tr -d "\r\n")
+
+if [ "$VALUE" = "IsOpen: true" ]; then
+  echo -n stratummonitor.value 1;
+elif [ "$VALUE" = "IsOpen: false" ]; then
+  echo -n stratummonitor.value 0;
+fi
