@@ -45,9 +45,9 @@ class StratumMonitor(callbacks.Plugin):
   NGINX_SITE_TEMPLATE = """server {
   root /srv/status.stratum0.org;
   index index.html index.htm;
+  access_log off;
 
   location / {
-    access_log off;
     rewrite ^/status.png$ $scheme://$http_host/{{{STATUS}}}.png redirect;
     rewrite ^/favicon.ico$ $scheme://$http_host/{{{STATUS}}}.ico redirect;
     expires +5m;
