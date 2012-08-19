@@ -30,6 +30,7 @@
 
 import os
 from datetime import datetime
+import time
 import supybot.utils as utils
 from supybot.commands import *
 import supybot.plugins as plugins
@@ -52,8 +53,12 @@ class StratumMonitor(callbacks.Plugin):
     rewrite ^/favicon.ico$ $scheme://$http_host/{{{STATUS}}}.ico redirect;
     expires +5m;
   }
-  location ~* /(open|closed)\.(ico|png)$ {
+  location ~* /(open|closed)(_square)?\.(ico|png)$ {
     expires off;
+  }
+  location ~* /status.json {
+    expires +5m;
+    add_header Access-Control-Allow-Origin *;
   }
 }
 """
@@ -64,11 +69,34 @@ class StratumMonitor(callbacks.Plugin):
 IsOpen: {{{ISOPEN}}}\r
 Since: {{{SINCE}}}\r
 """
+  # one file for Stratum 0 Open/Close Monitor API and Hackerspaces.nl Space API
+  # see: https://stratum0.org/wiki/Open/Close-Monitor/API
+  # see: http://hackerspaces.nl/spaceapi/
   API_JSON_FILE = API_PATH % "status.json"
   API_JSON_TEMPLATE = """{\r
   "version": "{{{VERSION}}}",\r
   "isOpen": {{{ISOPEN}}},\r
-  "since": "{{{SINCE}}}"\r
+  "since": "{{{SINCE}}}",\r
+  \r
+  "api": "0.12",\r
+  "space": "Stratum 0",\r
+  "url": "https:\/\/stratum0.org",\r
+  "logo": "https:\/\/stratum0.org\/mediawiki\/images\/thumb\/c\/c6\/Sanduhr-twitter-avatar-black.svg\/240px-Sanduhr-twitter-avatar-black.svg.png",\r
+  "address": "Hamburger Strasse 273a, 38114 Braunschweig, Germany",\r
+  "lat": 10.5211247,\r
+  "lon": 52.2785658,\r
+  "contact": {\r
+    "phone": "+4953128769245",\r
+    "twitter": "@stratum0",\r
+    "ml": "normalverteiler@stratum0.org",\r
+    "irc": "irc:\/\/irc.freenode.net\/#stratum0"\r
+  },\r
+  "open": {{{ISOPEN}}},\r
+  "icon": {\r
+    "open": "https:\/\/status.stratum0.org\/open_square.png",\r
+    "closed": "https:\/\/status.stratum0.org\/closed_square.png"\r
+  },\r
+  "lastchange": {{{SINCE_EPOCH}}}\r
 }\r
 """
   API_XML_FILE = API_PATH % "status.xml"
@@ -82,7 +110,7 @@ Since: {{{SINCE}}}\r
   API_ARCHIVE_FILE = API_PATH % "archive.txt"
   API_ARCHIVE_TEMPLATE = "{{{ACTION}}}: {{{SINCE}}}\r\n"
 
-  VERSION = "0.1"   ### Bump this for new API versions
+  VERSION = "0.1"   ### Bump this for new Open/Close API versions
 
   WEEKDAYS = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 
@@ -99,6 +127,8 @@ Since: {{{SINCE}}}\r
   def replaceVariables(self, text):
     text = text.replace("{{{VERSION}}}", self.VERSION)
     text = text.replace("{{{SINCE}}}", self.since.isoformat())
+    text = text.replace("{{{SINCE_EPOCH}}}",
+      str(int(time.mktime(self.since.timetuple()))))
     text = text.replace("{{{ISOPEN}}}", "true" if self.isOpen else "false")
     text = text.replace("{{{STATUS}}}", "open" if self.isOpen else "closed")
     text = text.replace("{{{ACTION}}}", "Opened" if self.isOpen else "Closed")
