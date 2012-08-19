@@ -63,7 +63,7 @@ supybot.networks.freenode.servers: irc.freenode.net:6667
 #
 # Default value:  
 ###
-supybot.networks.freenode.channels: #zombiepoettest
+supybot.networks.freenode.channels: #stratum0
 
 ###
 # Determines what key (if any) will be used to join the channel.
@@ -698,10 +698,10 @@ supybot.plugins.Alias.aliases.zu: topic replace 2 [spaceclosed]
 supybot.plugins.Alias.aliases.zu.locked: True
 supybot.plugins.Alias.aliases.close: zu $*
 supybot.plugins.Alias.aliases.close.locked: True
-supybot.plugins.Alias.aliases.open: offen $*
-supybot.plugins.Alias.aliases.open.locked: True
 supybot.plugins.Alias.aliases.offen: topic replace 2 [spaceopen @1]
 supybot.plugins.Alias.aliases.offen.locked: True
+supybot.plugins.Alias.aliases.open: offen $*
+supybot.plugins.Alias.aliases.open.locked: True
 
 ###
 # Determines whether this plugin is loaded by default.
