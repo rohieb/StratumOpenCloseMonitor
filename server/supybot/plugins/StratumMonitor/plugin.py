@@ -133,7 +133,7 @@ Since: {{{SINCE}}}\r
     irc.reply("Space ist offen (%s, %s)" %
       (self.topicTimeString(self.since), n), prefixNick = False)
 
-  spaceopen = wrap(spaceopen, [optional('nick')])
+  spaceopen = wrap(spaceopen, [optional('text')])
 
   def spaceclosed(self, irc, msg, args):
     """
