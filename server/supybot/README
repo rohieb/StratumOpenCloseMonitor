@@ -1,0 +1,11 @@
+This directory contains everything you need to start your supybot instance with
+StratumMonitor plugin enabled. After changing into this directory, just do:
+
+  $ supybot supybot.conf.example
+
+For extra security, you may want to start the bot as a different user:
+
+	$ sudo -u ircbot supybot supybot.conf.example
+
+To start the bot automatically after your machine has rebooted, you may also add
+that line to your crontab. (see crontab(1) for an explanation).

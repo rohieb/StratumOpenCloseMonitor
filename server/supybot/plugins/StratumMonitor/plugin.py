@@ -155,6 +155,12 @@ Since: {{{SINCE}}}\r
     If you use it anyhow, this command will eat your dog, fry it and quarter it
     (in exactly this order). If you have no dog, it will take the Nyan cat
     instead.
+
+    If you still need to use this: this command sets the hackerspace status to
+    open and updates the API files. It returns a string which can be pasted to
+    the channel topic. There is one optional parameter which specifies the nick
+    name of the one who is to blame for the open command. If this parameter is
+    empty, the nick of the caller is used instead.
     """
     self.since = datetime.now()
     self.isOpen = True;
@@ -171,6 +177,10 @@ Since: {{{SINCE}}}\r
     If you use it anyhow, this command will eat your dog, fry it and quarter it
     (in exactly this order). If you have no dog, it will take the Nyan cat
     instead.
+
+    If you still need to use this: this command sets the hackerspace status to
+    closed and updates the API files. It returns a string which can be pasted to
+    the channel topic.
     """
     self.since = datetime.now()
     self.isOpen = False;

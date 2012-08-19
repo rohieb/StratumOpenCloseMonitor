@@ -1,0 +1,15 @@
+The folders contains various clients to display the Stratum 0 open/close status.
+Currently, these are the following:
+
+* mediawiki/
+  A plugin for MediaWiki to display the open/close image in an article
+* munin/
+	A plugin for Munin which graphs the open/close status over time
+
+There are also other clients available elsewhere:
+
+* wansti's Android Widget, see
+  https://stratum0.org/wiki/StratumsphereStatusWidget
+* A tray icon for desktop OSes, see
+  https://stratum0.org/wiki/StratumsphereTrayIcon
+
