@@ -93,9 +93,10 @@ Since: {{{SINCE}}}\r
   },\r
   "open": {{{ISOPEN}}},\r
   "icon": {\r
-    "open": "https:\/\/status.stratum0.org\/open_square.png",\r
-    "closed": "https:\/\/status.stratum0.org\/closed_square.png"\r
+    "open": "http:\/\/status.stratum0.org\/open_square.png",\r
+    "closed": "http:\/\/status.stratum0.org\/closed_square.png"\r
   },\r
+  "status": "{{{STATUS}}}",\r
   "lastchange": {{{SINCE_EPOCH}}}\r
 }\r
 """
