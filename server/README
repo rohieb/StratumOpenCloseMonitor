@@ -68,6 +68,15 @@ Here is what I did, on my system, as root:
 
 Supybot will write its output to supybot/logs/messages.log.
 
+6. Create a crontab entry so Supybot is started at reboot. You can use the
+   template in cron.d/stratummonitor.
+
+# cp cron.d/stratummonitor /etc/cron.d/stratummonitor
+ -- or, instead of cp, just link to your cloned repository --
+# ln -s ~/StratumOpenCloseMonitor/server/cron.d/stratummonitor /etc/cron.d/stratummonitor
+ -- then, for both cases --
+# chown root:root /etc/cron.d/stratummonitor
+
 == Usage ==
 The space status can be set with the commands 'offen' and 'zu'. There are also
 additional aliases defined: 'auf' and 'open' are aliases for 'offen', and

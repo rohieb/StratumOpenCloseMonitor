@@ -1,0 +1,2 @@
+# m h  dom mon dow	user	command
+@reboot ircbot  supybot /home/ircbot/supybot/supybot.conf.example > /dev/null
