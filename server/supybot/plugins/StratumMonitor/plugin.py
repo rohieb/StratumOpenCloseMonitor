@@ -121,14 +121,14 @@ Since: {{{SINCE}}}\r
 
     self.isOpen = False
     self.since = datetime.now()
-    self.presentEntities = set()
+    self.presentEntities = None
     self.lastCalled = int(time.time())
 
     self.readMACs()
 
   def readMACs(self):
     knownMACs = {};
-    self.presentEntities = set()
+    self.presentEntities = ircutils.IrcSet()
 
     f = open("/etc/stratummonitor/known-users", "r")
     for line in f.readlines():
@@ -153,16 +153,19 @@ Since: {{{SINCE}}}\r
       self.readMACs()
       self.lastCalled = int(time.time())
 
-      chan = msg.args[0];      # FIXME: change channel!
-      if(ircutils.isChannel(chan) and chan == "#stratum0" and
-         chan in irc.state.channels.keys()):
-        #print "voices:  %s" % repr(irc.state.channels[chan].voices)
-        #print "present: %s" % repr(self.presentEntities)
-        for nick in (irc.state.channels[chan].voices - self.presentEntities):
-          irc.queueMsg(ircmsgs.devoice(chan, nick))
+    chan = msg.args[0];      # FIXME: change channel!
+    if(ircutils.isChannel(chan) and chan == "#stratum0" and
+       chan in irc.state.channels.keys()):
+      #print "voices:  %s" % repr(irc.state.channels[chan].voices)
+      #print "present: %s" % repr(self.presentEntities)
+      #print "devoice  %s" % repr(irc.state.channels[chan].voices - self.presentEntities)
+      #print "voice:   %s" % repr(self.presentEntities - irc.state.channels[chan].voices)
 
-        for nick in (self.presentEntities - irc.state.channels[chan].voices):
-          irc.queueMsg(ircmsgs.voice(chan, nick))
+      for nick in (irc.state.channels[chan].voices - self.presentEntities):
+        irc.queueMsg(ircmsgs.devoice(chan, nick))
+
+      for nick in (self.presentEntities - irc.state.channels[chan].voices):
+        irc.queueMsg(ircmsgs.voice(chan, nick))
 
   def presentEntities(self, irc, msg, args):
     irc.reply(", ".join(self.presentEntities), prefixNick=False)
