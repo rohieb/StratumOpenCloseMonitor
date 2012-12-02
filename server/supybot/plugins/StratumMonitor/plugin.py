@@ -34,9 +34,9 @@ import time
 import supybot.utils as utils
 from supybot.commands import *
 import supybot.plugins as plugins
+import supybot.ircmsgs as ircmsgs
 import supybot.ircutils as ircutils
 import supybot.callbacks as callbacks
-
 
 class StratumMonitor(callbacks.Plugin):
   """Stratum 0 Open/Close Monitor"""
@@ -121,6 +121,53 @@ Since: {{{SINCE}}}\r
 
     self.isOpen = False
     self.since = datetime.now()
+    self.presentEntities = set()
+    self.lastCalled = int(time.time())
+
+    self.readMACs()
+
+  def readMACs(self):
+    knownMACs = {};
+    self.presentEntities = set()
+
+    f = open("/etc/stratummonitor/known-users", "r")
+    for line in f.readlines():
+      parts = line.split("=>")
+      if(len(parts) == 2):
+        knownMACs[parts[0].strip().lower()] = parts[1].strip()
+    f.close()
+    #print repr(knownMACs)
+
+    f = open("/var/run/stratummonitor-netscan", "r")
+    for line in f.readlines():
+      scannedMAC = line.strip().lower()
+      if(scannedMAC in knownMACs.keys()):
+        #print "found mac address %s, belongs to user %s" % (scannedMAC,knownMACs[scannedMAC])
+        self.presentEntities.add(knownMACs[scannedMAC])
+    f.close()
+    #print repr(self.presentEntities)
+
+  def __call__(self, irc, msg):
+    # only re-read the file every 60 seconds
+    if self.lastCalled + 60 < int(time.time()):
+      self.readMACs()
+      self.lastCalled = int(time.time())
+
+      chan = msg.args[0];      # FIXME: change channel!
+      if(ircutils.isChannel(chan) and chan == "#stratum0" and
+         chan in irc.state.channels.keys()):
+        #print "voices:  %s" % repr(irc.state.channels[chan].voices)
+        #print "present: %s" % repr(self.presentEntities)
+        for nick in (irc.state.channels[chan].voices - self.presentEntities):
+          irc.queueMsg(ircmsgs.devoice(chan, nick))
+
+        for nick in (self.presentEntities - irc.state.channels[chan].voices):
+          irc.queueMsg(ircmsgs.voice(chan, nick))
+
+  def presentEntities(self, irc, msg, args):
+    irc.reply(", ".join(self.presentEntities), prefixNick=False)
+
+  weristda = wrap(presentEntities)
 
   def topicTimeString(self, date):
     return "%s, %s" % (self.WEEKDAYS[date.weekday()], date.strftime("%H:%M"))
