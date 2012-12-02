@@ -73,7 +73,7 @@ Supybot will write its output to supybot/logs/messages.log.
 
 # cp cron.d/stratummonitor /etc/cron.d/stratummonitor
  -- or, instead of cp, just link to your cloned repository --
-# ln -s ~/StratumOpenCloseMonitor/server/cron.d/stratummonitor /etc/cron.d/stratummonitor
+# ln ~/StratumOpenCloseMonitor/server/cron.d/stratummonitor /etc/cron.d/stratummonitor
  -- then, for both cases --
 # chown root:root /etc/cron.d/stratummonitor
 
