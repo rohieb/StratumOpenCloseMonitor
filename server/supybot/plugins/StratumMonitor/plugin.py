@@ -123,6 +123,7 @@ Since: {{{SINCE}}}\r
     self.since = datetime.now()
     self.presentEntities = None
     self.lastCalled = int(time.time())
+    self.lastBroadcast = 0
 
     self.readMACs()
 
@@ -248,6 +249,31 @@ Since: {{{SINCE}}}\r
       irc.reply("Space ist zu (%s)" % self.topicTimeString(self.since))
 
   spacestatus = wrap(spacestatus)
+
+  def spacebroadcast(self, irc, msg, args, argstring):
+    """ [<text>]
+    Test function
+    """
+    now = int(time.time())
+    #now = int(time.mktime(datetime.now().timetuple()))
+    self.log.info("last: %d" % self.lastBroadcast);
+    self.log.info("now:  %d" % now);
+    if(now < 60*3 + self.lastBroadcast):
+      irc.reply("Sorry, flood limit of 3 minutes.")
+    else:
+      params = argstring[0].replace(" ", "+")
+      os.spawnl(os.P_NOWAIT, "/usr/bin/mplayer", "mplayer",
+        "http://translate.google.com/translate_tts?tl=de&q=Ein+Brief+von+Prinzessin+Celestia.+%s" % params, "-ao",
+        "pulse:spacekiste.local")
+      #os.spawnl(os.P_NOWAIT, "/usr/bin/mplayer", "mplayer",
+      #  "http://tts-api.com/tts.mp3?q=i+r+c+broadcast+%s" % params, "-ao",
+      #  "pulse:spacekiste.local")
+      #os.spawnl(os.P_NOWAIT, "/usr/bin/mplayer", "mplayer",
+      #  "http://tts-api.com/tts.mp3?q=i+r+c+broadcast+%s" % params, " ")
+      irc.replySuccess()
+      self.lastBroadcast = int(time.time())
+
+  spacebroadcast = wrap(spacebroadcast, [many('text')])
 
 Class = StratumMonitor
 
