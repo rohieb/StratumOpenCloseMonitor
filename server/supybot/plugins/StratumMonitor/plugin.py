@@ -111,6 +111,20 @@ Since: {{{SINCE}}}\r
 </status>\r
 """
 
+  API_HTML_FILE = API_PATH % "status.html"
+  API_HTML_TEMPLATE = """<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>Stratum 0 Space Status</title></head>
+<body>
+  <h1>Stratum 0 Space Status</h1>
+  <img src="//status.stratum0.org/status.png" alt="{{{STATUS}}}" />
+  <p>{{{ACTION}}} since {{{SINCE}}}</p>
+  <p><a href="https://stratum0.org/wiki/Open/Close-Monitor">More information</a>
+  </p>
+</body></html>"""
+
   API_ARCHIVE_FILE = API_PATH % "archive.txt"
   API_ARCHIVE_TEMPLATE = "{{{ACTION}}}: {{{SINCE}}}\r\n"
 
@@ -223,6 +237,7 @@ Since: {{{SINCE}}}\r
     self.writeFile(self.API_TEXT_FILE, self.API_TEXT_TEMPLATE)
     self.writeFile(self.API_JSON_FILE, self.API_JSON_TEMPLATE)
     self.writeFile(self.API_XML_FILE, self.API_XML_TEMPLATE)
+    self.writeFile(self.API_HTML_FILE, self.API_HTML_TEMPLATE)
     self.writeFile(self.API_ARCHIVE_FILE, self.API_ARCHIVE_TEMPLATE, True)
     r = os.system("sudo killall -HUP nginx"); # NOTE: must be in sudoers to do that!
 
