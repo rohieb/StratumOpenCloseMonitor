@@ -207,7 +207,10 @@ Since: {{{SINCE}}}\r
           irc.queueMsg(ircmsgs.voice(chan, nick))
 
   def presentEntities(self, irc, msg, args):
-    irc.reply(", ".join(self.presentEntities), prefixNick=False)
+    if(len(self.presentEntities) != 0):
+      irc.reply(", ".join(self.presentEntities), prefixNick=False)
+    else:
+      irc.reply("No one is here but me. :-(", prefixNick=False)
 
   weristda = wrap(presentEntities)
 
