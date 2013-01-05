@@ -67,6 +67,7 @@ class StratumMonitor(callbacks.Plugin):
   API_TEXT_FILE = API_PATH % "status.txt"
   API_TEXT_TEMPLATE ="""Version: {{{VERSION}}}\r
 IsOpen: {{{ISOPEN}}}\r
+OpenedBy: {{{OPENER}}}\r
 Since: {{{SINCE}}}\r
 """
   # one file for Stratum 0 Open/Close Monitor API and Hackerspaces.nl Space API
@@ -77,6 +78,7 @@ Since: {{{SINCE}}}\r
   "version": "{{{VERSION}}}",\r
   "isOpen": {{{ISOPEN}}},\r
   "since": "{{{SINCE}}}",\r
+  "openedBy": "{{{OPENER}}}",\r
   \r
   "api": "0.12",\r
   "space": "Stratum 0",\r
@@ -104,6 +106,7 @@ Since: {{{SINCE}}}\r
   API_XML_TEMPLATE = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\r
 <status version="{{{VERSION}}}">\r
   <isOpen>{{{ISOPEN}}}</isOpen>\r
+  <openedBy>{{{OPENER}}}</openedBy>\r
   <since>{{{SINCE}}}</since>\r
 </status>\r
 """
@@ -120,6 +123,7 @@ Since: {{{SINCE}}}\r
     self.__parent.__init__(irc)
 
     self.isOpen = False
+    self.openedBy = ""
     self.since = datetime.now()
     self.presentEntities = None
     self.lastCalled = int(time.time())
@@ -184,6 +188,7 @@ Since: {{{SINCE}}}\r
     text = text.replace("{{{ISOPEN}}}", "true" if self.isOpen else "false")
     text = text.replace("{{{STATUS}}}", "open" if self.isOpen else "closed")
     text = text.replace("{{{ACTION}}}", "Opened" if self.isOpen else "Closed")
+    text = text.replace("{{{OPENER}}}", self.openedBy)
     return text
 
   def writeFile(self, filename, template, append=False):
@@ -216,10 +221,10 @@ Since: {{{SINCE}}}\r
     """
     self.since = datetime.now()
     self.isOpen = True;
+    self.openedBy = nick if nick else msg.nick
     self.writeFiles()
-    n = nick if nick else msg.nick
     irc.reply("Space ist offen (%s, %s)" %
-      (self.topicTimeString(self.since), n), prefixNick = False)
+      (self.topicTimeString(self.since), self.openedBy), prefixNick = False)
 
   spaceopen = wrap(spaceopen, [optional('text')])
 
@@ -236,6 +241,7 @@ Since: {{{SINCE}}}\r
     """
     self.since = datetime.now()
     self.isOpen = False;
+    self.openedBy = ""
     self.writeFiles()
     irc.reply("Space ist zu (%s)" % self.topicTimeString(self.since),
       prefixNick = False)
