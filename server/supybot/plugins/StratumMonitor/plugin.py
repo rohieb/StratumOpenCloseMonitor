@@ -158,7 +158,7 @@ Since: {{{SINCE}}}\r
     f.close()
     self.log.info("Known mDNS hostnames: %s" % repr(knownMDNSs))
 
-    f = open("/etc/stratummonitor/known-users", "r")
+    f = open("/etc/stratummonitor/known-macs", "r")
     for line in f.readlines():
       parts = line.split("=>")
       if(len(parts) == 2):
