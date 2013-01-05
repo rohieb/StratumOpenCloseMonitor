@@ -6,6 +6,7 @@ This directory contains the server part of the Stratum 0 Open/Close Monitor.
 * sudo
 * cron
 * nmap >= 6.00
+* avahi-utils
 
 On a recent Debian system (tested on wheezy) do the following:
 # apt-get install supybot nginx-light sudo cron nmap
