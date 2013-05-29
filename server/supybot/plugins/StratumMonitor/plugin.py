@@ -209,7 +209,7 @@ Since: {{{SINCE}}}\r
     self.log.info("Present MACs: %s" % repr(self.presentEntities))
 
   def sendEventdistrPacket(self, opened):
-    ip = "192.168.178.255"
+    ip = "192.168.179.255"
     port = 31337
     s = sock.socket(sock.AF_INET, sock.SOCK_DGRAM)
     s.setsockopt(sock.SOL_SOCKET,sock.SO_BROADCAST,1)
