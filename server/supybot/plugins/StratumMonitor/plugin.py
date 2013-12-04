@@ -50,8 +50,10 @@ class StratumMonitor(callbacks.Plugin):
   access_log off;
 
   location / {
-    rewrite ^/status.png$ $scheme://$http_host/{{{STATUS}}}.png redirect;
-    rewrite ^/favicon.ico$ $scheme://$http_host/{{{STATUS}}}.ico redirect;
+    rewrite ^/status.png$ https://$http_host/{{{STATUS}}}.png redirect;
+    rewrite ^/favicon.ico$ https://$http_host/{{{STATUS}}}.ico redirect;
+    #rewrite ^/status.png$ $scheme://$http_host/{{{STATUS}}}.png redirect;
+    #rewrite ^/favicon.ico$ $scheme://$http_host/{{{STATUS}}}.ico redirect;
     expires +5m;
   }
   location ~* /(open|closed)(_square)?\.(ico|png)$ {
